@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSc IT AI Guidance System</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; margin: 0 auto; max-width: 900px; padding: 20px; background-color: #f9f9f9; }
+        header, footer { text-align: center; padding: 20px; background-color: #eef; border-radius: 8px; }
+        section { border: 1px solid #ddd; padding: 20px; margin-bottom: 20px; border-radius: 8px; background-color: white; }
+        h1, h2, h3, h4 { color: #333; }
+        code { background-color: #eef; padding: 2px 5px; border-radius: 4px; font-family: monospace; }
+        button { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 15px; }
+        button:hover { background-color: #0056b3; }
+        #results-container { margin-top: 20px; padding: 15px; background-color: #f0f0f0; border-left: 5px solid #007bff; }
+        .path { border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        ul { padding-left: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>BSc IT AI Guidance System OUSL</h1>
+        <p>An interactive university and career path finder using Prolog's AI search algorithms.</p>
+    </header>
+
+    <main>
+        <!-- Interactive Section -->
+        <section>
+            <h2>Find Your Path</h2>
+            <p>Select your starting condition and your dream job, then choose an algorithm to find your path.</p>
+            <form id="path-finder-form">
+                <!-- User input for A/L Status -->
+                <div class="form-group">
+                    <label>1. What was your A/L result?</label><br>
+                    <input type="radio" id="al_pass" name="al_status" value="pass" checked>
+                    <label for="al_pass">Passed A/L</label>
+                    <br>
+                    <input type="radio" id="al_fail" name="al_status" value="fail">
+                    <label for="al_fail">Failed A/L (will follow a Foundation path)</label>
+                </div>
+
+                <!-- User input for Dream Job -->
+                <div class="form-group">
+                    <label for="job_goal">2. What is your dream job?</label><br>
+                    <select id="job_goal" name="job_goal">
+                        <option value="se_job">Software Engineer</option>
+                        <option value="ce_job">Cybersecurity Engineer</option>
+                        <option value="ai_job">AI Engineer</option>
+                        <option value="ui_job">UI/UX Designer</option>
+                    </select>
+                </div>
+
+                <!-- Algorithm selection -->
+                <div class="form-group">
+                    <label>3. Which search algorithm should be used?</label><br>
+                    <input type="radio" id="dfs" name="algorithm" value="dfs" checked>
+                    <label for="dfs">Find All Paths(DFS)</label>
+                    <br>
+                    <input type="radio" id="bfs" name="algorithm" value="bfs">
+                    <label for="bfs">Find Shortest Path by Steps(BFS)</label>
+                    <br>
+                    <!-- <<< NEW: A* Algorithm Option >>> -->
+                    <input type="radio" id="a_star" name="algorithm" value="a_star">
+                    <label for="a_star">Find Optimal Path by Time(A*)</label>
+                </div>
+
+                <button type="submit">Find My Path</button>
+            </form>
+            <div id="results-container">
+                <p>Your results will be displayed here...</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Project: BSc IT AI Guidance System OUSL | Running on a SWI-Prolog web server.</p>
+    </footer>
+
+    <!-- JavaScript to handle form submission and display results -->
+    <script>
+        const form = document.getElementById('path-finder-form');
+        const resultsContainer = document.getElementById('results-container');
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault(); // Stop the page from reloading
+            
+            // Get data from ALL form fields
+            const alStatus = document.querySelector('input[name="al_status"]:checked').value;
+            const jobGoal = document.getElementById('job_goal').value;
+            const selectedAlgorithm = document.querySelector('input[name="algorithm"]:checked').value;
+
+            resultsContainer.innerHTML = '<p>Searching for your personalized path...</p>';
+
+            try {
+                const response = await fetch('/find_path', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        al_status: alStatus, 
+                        job_goal: jobGoal,
+                        algorithm: selectedAlgorithm 
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server responded with an error: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                displayResults(data.results, selectedAlgorithm);
+
+            } catch (error) {
+                resultsContainer.innerHTML = '<p><strong>Error:</strong> Could not connect to the Prolog server. Is it running? Check the console for details.</p>';
+                console.error('Fetch error:', error);
+            }
+        });
+
+        function displayResults(results, algorithm) {
+            resultsContainer.innerHTML = ''; // Clear previous results
+            if (!results || results.length === 0) {
+                resultsContainer.innerHTML = '<p>No paths were found for the selected options.</p>';
+                return;
+            }
+
+            if (algorithm === 'dfs') {
+                resultsContainer.innerHTML += `<h3>Found ${results.length} possible path(s) using DFS:</h3>`;
+                results.forEach((result, index) => {
+                    const pathDiv = document.createElement('div');
+                    pathDiv.className = 'path';
+                    let pathHTML = `<h4>Path ${index + 1} (Total Time: ${result.time} months)</h4><ul>`;
+                    result.path.forEach(step => {
+                        pathHTML += `<li>${step}</li>`;
+                    });
+                    pathHTML += '</ul>';
+                    pathDiv.innerHTML = pathHTML;
+                    resultsContainer.appendChild(pathDiv);
+                });
+            }
+
+            if (algorithm === 'bfs') {
+                const result = results[0];
+                resultsContainer.innerHTML += `<h3>Shortest Path Found using BFS (${result.steps.length - 1} steps):</h3>`;
+                const pathDiv = document.createElement('div');
+                pathDiv.className = 'path';
+                let pathHTML = `<h4>Node Sequence: ${result.steps.join(' &rarr; ')}</h4><ul>`;
+                result.path.forEach(step => {
+                    pathHTML += `<li>${step}</li>`;
+                });
+                pathHTML += '</ul>';
+                pathDiv.innerHTML = pathHTML;
+                resultsContainer.appendChild(pathDiv);
+            }
+            
+            // <<< NEW: Display logic for A* search results >>>
+            if (algorithm === 'a_star') {
+                const result = results[0]; // A* finds one optimal path
+                resultsContainer.innerHTML += `<h3>Optimal Path Found using A* (Total Time: ${result.time} months):</h3>`;
+                const pathDiv = document.createElement('div');
+                pathDiv.className = 'path';
+                 // Display the node sequence for clarity
+                let pathHTML = `<h4>Node Sequence: ${result.steps.join(' &rarr; ')}</h4><ul>`;
+                result.path.forEach(step => {
+                    pathHTML += `<li>${step}</li>`;
+                });
+                pathHTML += '</ul>';
+                pathDiv.innerHTML = pathHTML;
+                resultsContainer.appendChild(pathDiv);
+            }
+        }
+    </script>
+</body>
+</html>
