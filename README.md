@@ -1,57 +1,83 @@
-----------BSC IT AI Guidance System OUSL (Find the path for your Dream Job)----------
+# BSc IT AI Guidance System – OUSL 🎓
 
+**Find the path to your dream job.**
 
-This is a program for students who finished there A/L's and trying to understand how they can achieve their dream careers through the help of Open university Sri Lanka. So this program can help not only the Students who finish their A/L but the students who already enroll in the OUSL or any one who want to follow there dreams and create a path for the future. This program able to give you a relatively correct path and rough estimation for the time it's gonna take to achieve the goal you desire. we currently added 4 IT related jobs such as Software Engineer, Cybersecurity Engineer, AI Engineer and UI/UX Designer. And you can get a rough idea about what to do to become one of those professionals and how much time it will take.
+An AI-powered career guidance system built in **Prolog**, designed for students who have finished their A/Levels (or are already enrolled) and want to understand how to reach their dream IT career through the Open University of Sri Lanka (OUSL).
 
-**Technologies or the searching algorithms used in here**
+The system maps out a relatively accurate path — along with a rough time estimate — to help you become a professional in one of four IT career tracks:
 
--In here we are using 3 main searching algorithms namely Breadth First Search, Depth First Search and lastly A* algorithm. we are using these algorithms for different purposes such as
- Breadth First Search - Shortest step count and the related path.
- Depth First Search - To show all the available paths and their path costs(time in months).
- A* - Shortest and most optimal path by the path cost(time).
+- 💻 Software Engineer
+- 🔒 Cybersecurity Engineer
+- 🤖 AI Engineer
+- 🎨 UI/UX Designer
 
+It can be used through a **console interface** or a **web-based GUI**.
 
-**How to run the program**
+## Search Algorithms Used
 
-1. Extract the zip file to your desire location.(file must contain Bsc_IT.pl, index.html files)
+This project uses three classic AI search algorithms, each serving a different purpose:
 
-2. Open the prolog software and give the path to the extracted file. This step is crucial if you want to access the GUI(Graphical user Interface). 
-Give the File Save Path For example EX = cd('/Users/admin/Desktop/COU4303_19'). , cd('/Users/WW/Desktop/COU4303_19'). cd('D:/COU4303_19')
+| Algorithm | Purpose |
+|---|---|
+| **Breadth-First Search (BFS)** | Finds the shortest step count and the related path |
+| **Depth-First Search (DFS)** | Shows all available paths along with their path costs (time in months) |
+| **A\* Search** | Finds the shortest and most optimal path based on path cost (time) |
 
-3. Then you need to consult the Bsc IT.pl file in prolog (file->consult->Bsc IT.pl)
+## Project Structure
+```
+BSc-IT-AI-Guidance-System/
+└── Project/
+    ├── Bsc IT.pl      # Main Prolog program (search logic + console/GUI handling)
+    └── index.html     # Web-based GUI interface
+```
 
-4. After all the libraries are compiled to the SWI-Prolog you can type "start.".
+## Requirements
+- [SWI-Prolog](https://www.swi-prolog.org/) installed
+- A modern web browser (for GUI mode)
 
-5. Then you have to choose either console mode or GUI mode, to do that you can either type console or c for console mode or you can type gui or g for GUI mode.*do not type a dot at the end(e.g.- console) for any choice from now on
+## How to Run
 
---- Console Mode ---
+1. **Download/extract** the project files to a location of your choice. Make sure the folder contains both `Bsc IT.pl` and `index.html`.
 
-6. After you select console mode the first thing you are asked is that your A/L status pass or fail (This will be your starting node). Depending your choice outcome will be different. 
+2. **Open SWI-Prolog** and set the working directory to the extracted folder:
+   ```prolog
+   cd('/path/to/your/extracted/folder').
+   ```
+   Example:
+   ```prolog
+   cd('D:/COU4303_19').
+   ```
 
-7. Then you can select your dream job. You can either select the given number or type the full name of the profession from the given choices.
+3. **Consult the program file** in Prolog:
+   ```
+   File -> Consult -> Bsc IT.pl
+   ```
 
-8. After that you are ask to choose a searching algorithm between dfs, bfs, a_star. We have implemented these algorithms to perform different tasks if you want to know more about that it's under Technologies.
+4. Once loaded, start the program by typing:
+   ```prolog
+   start.
+   ```
 
-9. After that for the choices you have made results are given. Then you can either start over by typing 'yes' or stop and exit the program by typing 'no'.
+5. Choose your interface mode by typing `console` (or `c`) or `gui` (or `g`).
+   > ⚠️ Do not type a trailing dot for any of these choices (e.g. type `console`, not `console.`).
 
---- GUI Mode ---
+### Console Mode
+1. Enter your A/L status: `pass` or `fail` (this becomes your starting point).
+2. Select your dream job by entering the number or the full profession name.
+3. Choose a search algorithm: `dfs`, `bfs`, or `a_star`.
+4. View your generated career path and estimated timeline.
+5. Type `yes` to search again, or `no` to exit.
 
-6. After you select the GUI mode you need to start a local server for that you need to open a port in either 8000 or 8001. So enter either 8000 or 8001 to start the local server.
+### GUI Mode
+1. When prompted, start a local server on port `8000` or `8001`.
+2. Open your browser and navigate to:
+   ```
+   http://localhost:<port you selected>
+   ```
+3. Use the graphical interface to explore your career path — no further console input needed.
 
-7.  Then you can open your web browser and go to: http://localhost:<port you selected>
+## License
+This project is open source and free to use.
 
-8. Then you can use the GUI mode of the program without any questions.
-
-
-***************************************************************
-********************Thank you for your time********************
-***************************************************************
-
-
-
-
-
-
-
-
-
+---
+*Thank you for using the BSc IT AI Guidance System OUSL!*
