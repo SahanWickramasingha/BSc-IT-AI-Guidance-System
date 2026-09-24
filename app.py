@@ -8,13 +8,19 @@ from flask import Flask, jsonify, request, send_from_directory
 from guidance import ALGORITHMS, GOALS, STARTS, find_paths
 
 
-FRONTEND = Path(__file__).resolve().parent / "frontend" / "dist" / "frontend" / "browser"
-app = Flask(__name__, static_folder=str(FRONTEND), static_url_path="")
+PUBLIC = Path(__file__).resolve().parent / "public"
+app = Flask(__name__, static_folder=None)
 
 
 @app.get("/")
 def index():
-    return send_from_directory(FRONTEND, "index.html")
+    return send_from_directory(PUBLIC, "index.html")
+
+
+@app.get("/<path:filename>")
+def local_asset(filename):
+    """Serve the built UI locally; Vercel serves public/ assets from its CDN."""
+    return send_from_directory(PUBLIC, filename)
 
 
 @app.post("/find_path")
