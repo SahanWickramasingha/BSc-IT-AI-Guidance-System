@@ -1,0 +1,128 @@
+<header class="topbar">
+  <div class="container topbar-inner">
+    <a href="#top" class="identity" aria-label="Pathfinder home"><img class="identity-logo" src="brand-logo.png" alt="" width="66" height="66"><span><strong>Pathfinder</strong><small>OUSL · BSc IT AI Guidance</small></span></a>
+    <nav aria-label="Main navigation"><a href="#explorer">Explore paths</a><a href="#route-details">Route details</a><a class="nav-button" href="#explorer">Start exploring <span aria-hidden="true">↗</span></a></nav>
+  </div>
+</header>
+
+<main id="top">
+  <section id="explorer" class="explorer container" aria-label="Interactive IT career path explorer">
+    <div class="inputs-pane" aria-labelledby="hero-title">
+      <div class="intro-copy">
+        <span class="eyebrow"><i aria-hidden="true"></i> YOUR FUTURE STARTS HERE</span>
+        <h1 id="hero-title">Find your way <em>into tech.</em></h1>
+        <p>From your A/L result to the career you want. Explore possible OUSL routes, compare the steps, and see how long each path could take.</p>
+        <div class="hero-highlights" aria-label="Pathfinder features"><span><i aria-hidden="true"></i> 4 career goals</span><span><i aria-hidden="true"></i> 3 search methods</span><span><i aria-hidden="true"></i> Live route preview</span></div>
+      </div>
+      <div class="controls-card" id="choices">
+        <div class="controls-heading"><div><span class="section-top"><span class="step-no">01</span><span>MAKE IT YOURS</span></span><h2>Build your route</h2><p class="pane-subtitle">Choose an option to update your journey instantly.</p></div><span class="controls-spark" aria-hidden="true">✦</span></div>
+
+      <fieldset class="choice-group">
+        <legend>What was your A/L result?</legend>
+        <div class="chip-row">
+          <label class="option"><input type="radio" name="alStatus" value="pass" [ngModel]="alStatus" (ngModelChange)="selectStatus($event)"><span>Passed A/L</span></label>
+          <label class="option"><input type="radio" name="alStatus" value="fail" [ngModel]="alStatus" (ngModelChange)="selectStatus($event)"><span>Didn't pass</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="choice-group">
+        <legend>Which career interests you?</legend>
+        <div class="chip-row careers">
+          @for (goal of goals; track goal.value) {
+            <label class="option career-option" [class]="goal.color"><input type="radio" name="jobGoal" [value]="goal.value" [ngModel]="jobGoal" (ngModelChange)="selectGoal($event)"><span><i class="dot" aria-hidden="true"></i>{{ goal.label }}</span></label>
+          }
+        </div>
+      </fieldset>
+
+      <fieldset class="choice-group">
+        <legend>How should we search?</legend>
+        <div class="chip-row">
+          <label class="option"><input type="radio" name="algorithm" value="dfs" [ngModel]="algorithm" (ngModelChange)="selectAlgorithm($event)"><span>Every route</span></label>
+          <label class="option"><input type="radio" name="algorithm" value="bfs" [ngModel]="algorithm" (ngModelChange)="selectAlgorithm($event)"><span>Fewest steps</span></label>
+          <label class="option"><input type="radio" name="algorithm" value="a_star" [ngModel]="algorithm" (ngModelChange)="selectAlgorithm($event)"><span>Shortest time</span></label>
+        </div>
+      </fieldset>
+
+      <div class="method-note">
+        <span class="method-icon" aria-hidden="true">✳</span>
+        <p>@switch (algorithm) {
+          @case ('dfs') { See every available route and compare their estimated times. }
+          @case ('bfs') { Find a route with the fewest stages. It may take longer in months. }
+          @case ('a_star') { Find the route with the shortest estimated time. }
+        }</p>
+      </div>
+      <a href="#route-details" class="details-link">See step-by-step route <span aria-hidden="true">↘</span></a>
+      </div>
+    </div>
+
+    <div class="map-pane" [class.se-theme]="jobGoal === 'se_job'" [class.ce-theme]="jobGoal === 'ce_job'" [class.ai-theme]="jobGoal === 'ai_job'" [class.ui-theme]="jobGoal === 'ui_job'">
+      <div class="map-header"><div><span class="map-kicker">YOUR ROUTE TO</span><h2>{{ selectedJob }}</h2></div><div class="estimate">@if (loading()) { <span class="estimate-loading">…</span> } @else { <strong>{{ animatedMonths() ?? totalMonths ?? '—' }}</strong> }<small>months estimated</small></div></div>
+      <div class="map-hint"><span class="map-hint-icon" aria-hidden="true">✦</span> Tap a destination to explore</div>
+      <div class="map-scroll" aria-label="Interactive career route illustration"><div class="map-stage">
+        <svg viewBox="0 0 810 420" role="img" aria-labelledby="map-title map-description">
+          <title id="map-title">Career route map to {{ selectedJob }}</title>
+          <desc id="map-description">Illustrative progression from {{ alStatus === 'pass' ? 'passed A/L' : 'foundation' }} through degree study and job search to the selected career. See the route details below for the exact steps.</desc>
+          <defs>
+            <filter id="route-glow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <path class="trunk" d="M 65 230 L 430 230"/>
+          <path class="branch muted se-line" d="M 430 230 C 505 230 505 80 610 80 L 650 80"/>
+          <path class="branch muted ce-line" d="M 430 230 C 500 230 505 165 610 165 L 650 165"/>
+          <path class="branch muted ai-line" d="M 430 230 C 500 230 505 290 610 290 L 650 290"/>
+          <path class="branch muted ui-line" d="M 430 230 C 505 230 505 370 610 370 L 650 370"/>
+          <path class="flow trunk-flow" d="M 65 230 L 430 230" pathLength="100"/>
+          <path class="flow branch-flow" [attr.d]="activeBranchPath" pathLength="100"/>
+          @for (goal of goals; track goal.value) {
+            @if (goal.value === jobGoal) {
+              <g class="moving-particles" aria-hidden="true">
+                <circle class="traveler-halo" r="16"><animateMotion [attr.path]="activeMotionPath" dur="4.2s" repeatCount="indefinite"/></circle>
+                <circle class="traveler-core" r="6"><animateMotion [attr.path]="activeMotionPath" dur="4.2s" repeatCount="indefinite"/></circle>
+                <circle class="traveler-trail" r="3"><animateMotion [attr.path]="activeMotionPath" dur="4.2s" begin="-0.23s" repeatCount="indefinite"/></circle>
+              </g>
+            }
+          }
+          <circle class="junction-pulse" cx="430" cy="230" r="7"/>
+          <g class="root-nodes"><circle cx="95" cy="230" r="13"/><circle cx="235" cy="230" r="13"/><circle cx="375" cy="230" r="13"/></g>
+          <g class="target se-target" [class.is-active]="jobGoal === 'se_job'" role="button" tabindex="0" aria-label="Explore Software Engineer route" (click)="selectGoal('se_job')" (keydown.enter)="selectGoal('se_job')" (keydown.space)="$event.preventDefault(); selectGoal('se_job')"><circle cx="650" cy="80" r="18"/><text x="674" y="86">Software</text></g>
+          <g class="target ce-target" [class.is-active]="jobGoal === 'ce_job'" role="button" tabindex="0" aria-label="Explore Cybersecurity Engineer route" (click)="selectGoal('ce_job')" (keydown.enter)="selectGoal('ce_job')" (keydown.space)="$event.preventDefault(); selectGoal('ce_job')"><circle cx="650" cy="165" r="18"/><text x="674" y="171">Cybersecurity</text></g>
+          <g class="target ai-target" [class.is-active]="jobGoal === 'ai_job'" role="button" tabindex="0" aria-label="Explore AI Engineer route" (click)="selectGoal('ai_job')" (keydown.enter)="selectGoal('ai_job')" (keydown.space)="$event.preventDefault(); selectGoal('ai_job')"><circle cx="650" cy="290" r="18"/><text x="674" y="296">AI Engineer</text></g>
+          <g class="target ui-target" [class.is-active]="jobGoal === 'ui_job'" role="button" tabindex="0" aria-label="Explore UI/UX Designer route" (click)="selectGoal('ui_job')" (keydown.enter)="selectGoal('ui_job')" (keydown.space)="$event.preventDefault(); selectGoal('ui_job')"><circle cx="650" cy="370" r="18"/><text x="674" y="376">UI/UX Design</text></g>
+          <g class="stage-labels">
+            <text x="95" y="274" text-anchor="middle">{{ alStatus === 'pass' ? 'Passed A/L' : 'Foundation' }}</text>
+            <text x="235" y="274" text-anchor="middle">BSc IT</text>
+            <text x="375" y="274" text-anchor="middle">Job search</text>
+          </g>
+        </svg>
+      </div></div>
+      <div class="mobile-map" aria-label="Route preview with selectable career goals">
+        <div class="mobile-journey"><div class="mobile-track" aria-hidden="true"></div>
+          <div class="mobile-stop"><span class="mobile-stop-icon">01</span><span><strong>{{ alStatus === 'pass' ? 'Passed A/L' : 'Foundation' }}</strong><small>Your starting point</small></span></div>
+          <div class="mobile-stop"><span class="mobile-stop-icon">02</span><span><strong>BSc IT</strong><small>Build your skills</small></span></div>
+          <div class="mobile-stop"><span class="mobile-stop-icon">03</span><span><strong>Job search</strong><small>Find your opportunity</small></span></div>
+          <div class="mobile-stop is-destination"><span class="mobile-stop-icon">✦</span><span><strong>{{ selectedJob }}</strong><small>Your chosen destination</small></span></div>
+        </div>
+        <p class="mobile-career-label">Explore another career</p>
+        <div class="mobile-careers">@for (goal of goals; track goal.value) { <button type="button" [class]="goal.color" [class.selected]="jobGoal === goal.value" [attr.aria-pressed]="jobGoal === goal.value" (click)="selectGoal(goal.value)">{{ goal.label }}</button> }</div>
+      </div>
+      <div class="map-footer"><span class="map-live"><i aria-hidden="true"></i> LIVE ROUTE MAP</span><span>{{ summaryLabel }}</span></div>
+    </div>
+  </section>
+
+  <section id="route-details" class="route-section container" aria-labelledby="routes-title">
+    <div class="route-heading"><div><span class="eyebrow">THE FULL PICTURE</span><h2 id="routes-title">Your path, step by step.</h2></div><p>Compare route details below. Durations are estimates from the project's career map.</p></div>
+    @if (error()) { <div class="message error" role="alert">{{ error() }} <button type="button" (click)="search()">Try again</button></div> }
+    @else if (loading()) { <div class="message" role="status">Finding your route…</div> }
+    @else if (results(); as routes) {
+      @if (routes.length) {
+        <div class="route-list">
+          @for (route of routes; track $index) {
+            <details class="route-card" [open]="$index === 0"><summary><span class="route-index">{{ ($index + 1).toString().padStart(2, '0') }}</span><span class="route-name">Route {{ $index + 1 }}<small>{{ route.path.length }} stages</small></span><span class="route-duration">{{ routeMonths(route) }} months</span><span class="chevron" aria-hidden="true">⌄</span></summary><ol>@for (step of route.path; track $index) { <li>{{ step }}</li> }</ol></details>
+          }
+        </div>
+      } @else { <div class="message">No route was found for those choices.</div> }
+    }
+    <p class="footnote">These are project estimates. Confirm current admission rules, degree structure, and timelines directly with OUSL.</p>
+  </section>
+</main>
+
+<footer><div class="container footer-inner"><strong>Pathfinder</strong><span>BSc IT AI Guidance System · OUSL student project</span><a href="#top">Back to top ↑</a></div></footer>

@@ -1,0 +1,22 @@
+# Python environment and generated files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Angular dependencies and local build cache
+frontend/node_modules
+frontend/.angular/
+
+# Local configuration and downloaded archives
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite3
+*.log
+*.zip
+.DS_Store
+
+# Keep frontend/dist: Flask serves the included production Angular build.

@@ -1,0 +1,218 @@
+[
+  [
+    "start",
+    "al_result",
+    "Sit for A/L Exam",
+    0
+  ],
+  [
+    "al_result",
+    "al_pass",
+    "Pass A/L",
+    0
+  ],
+  [
+    "al_pass",
+    "select_degree",
+    "Select a Degree Program",
+    2
+  ],
+  [
+    "select_degree",
+    "completed_3yr_degree",
+    "Complete 3 Year Degree",
+    36
+  ],
+  [
+    "completed_3yr_degree",
+    "do_internship",
+    "Then,Degree duration time to Complete Internship",
+    0
+  ],
+  [
+    "completed_3yr_degree",
+    "do_research",
+    "Then,Degree duration time to Complete Project",
+    0
+  ],
+  [
+    "do_internship",
+    "special_degree_internship",
+    "Start Final Year for Special Degree",
+    12
+  ],
+  [
+    "special_degree_internship",
+    "seek_employment",
+    "Complete Special Degree duration time to Research Project",
+    0
+  ],
+  [
+    "do_research",
+    "special_degree_research",
+    "Start Final Year for Special Degree",
+    12
+  ],
+  [
+    "special_degree_research",
+    "seek_employment",
+    "Complete Special Degree duration time to Research Project",
+    0
+  ],
+  [
+    "do_internship",
+    "no_special_degree_internship",
+    "Graduate without a Special Degree",
+    0
+  ],
+  [
+    "do_research",
+    "no_special_degree_research",
+    "Graduate without a Special Degree",
+    0
+  ],
+  [
+    "al_result",
+    "al_fail",
+    "Fail A/L",
+    0
+  ],
+  [
+    "al_fail",
+    "do_foundation",
+    "Complete Foundation Course",
+    24
+  ],
+  [
+    "do_foundation",
+    "select_degree_foundation",
+    "Select a Degree After Foundation",
+    2
+  ],
+  [
+    "select_degree_foundation",
+    "completed_3yr_degree_foundation",
+    "Complete 3 Year Degree",
+    36
+  ],
+  [
+    "completed_3yr_degree_foundation",
+    "do_internship_foundation",
+    "Then, Degree duration time to Complete Internship",
+    0
+  ],
+  [
+    "completed_3yr_degree_foundation",
+    "do_research_foundation",
+    "Then, Degree duration time to Complete Project",
+    0
+  ],
+  [
+    "do_internship_foundation",
+    "special_degree_internship_foundation",
+    "Start Final Year for Special Degree",
+    12
+  ],
+  [
+    "special_degree_internship_foundation",
+    "seek_employment",
+    "Complete Special Degree duration time to Research Project",
+    0
+  ],
+  [
+    "do_research_foundation",
+    "special_degree_research_foundation",
+    "Start Final Year for Special Degree",
+    12
+  ],
+  [
+    "special_degree_research_foundation",
+    "seek_employment",
+    "Complete Special Degree duration time to Research Project",
+    0
+  ],
+  [
+    "do_internship_foundation",
+    "no_special_degree_internship_foundation",
+    "Graduate without a Special Degree",
+    0
+  ],
+  [
+    "do_research_foundation",
+    "no_special_degree_research_foundation",
+    "Graduate without a Special Degree",
+    0
+  ],
+  [
+    "no_special_degree_internship",
+    "seek_employment",
+    "Start Applying for Jobs",
+    2
+  ],
+  [
+    "no_special_degree_research",
+    "seek_employment",
+    "Start Applying for Jobs",
+    5
+  ],
+  [
+    "no_special_degree_internship_foundation",
+    "seek_employment",
+    "Start Applying for Jobs",
+    2
+  ],
+  [
+    "no_special_degree_research_foundation",
+    "seek_employment",
+    "Start Applying for Jobs",
+    5
+  ],
+  [
+    "seek_employment",
+    "specialize_se",
+    "Specialize in Software Engineering & Attend Interviews",
+    3
+  ],
+  [
+    "seek_employment",
+    "specialize_ce",
+    "Specialize in Cybersecurity & Attend Interviews",
+    4
+  ],
+  [
+    "seek_employment",
+    "specialize_ai",
+    "Specialize in AI/ML & Attend Interviews",
+    5
+  ],
+  [
+    "seek_employment",
+    "specialize_ui",
+    "Specialize in UI/UX Design & Attend Interviews",
+    6
+  ],
+  [
+    "specialize_se",
+    "se_job",
+    "Software Engineer Job!",
+    1
+  ],
+  [
+    "specialize_ce",
+    "ce_job",
+    "Cybersecurity Engineer Job!",
+    1
+  ],
+  [
+    "specialize_ai",
+    "ai_job",
+    "AI Engineer Job!",
+    1
+  ],
+  [
+    "specialize_ui",
+    "ui_job",
+    "UI/UX Designer Job!",
+    1
+  ]
+]
